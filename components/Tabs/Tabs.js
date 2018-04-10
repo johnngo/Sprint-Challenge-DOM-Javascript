@@ -31,10 +31,15 @@ class TabLink {
 }
 
 class Tabs {
-  constructor(element) {
+  constructor(element, parent) {
     this.element = element;
-
+    
+    this.tabs = parent; // attach parent to object
     // Attaches links with data-tab value as property
+    this.tabLink = document.querySelector(`.Tabs__link[data-tab="${element.dataset.tab}"]`);
+    this.tabLink = new TabLink(this.tabLink);
+    // links of data-tab
+
     this.links = element.querySelectorAll(".Tabs__link");
     this.links = Array.from(this.links).reduce((obj, link) => {
       obj[link.dataset.tab] = new TabLink(link);
@@ -42,6 +47,9 @@ class Tabs {
     }, {});
 
     // Attaches items with data-tab value as property
+    this.tabItem = document.querySelector(`.Tabs__item[data-tab="${element.dataset.tab}"]`);
+    this.tabItem = new TabItem(this.tabItem);
+    // items of data-tab
     this.items = element.querySelectorAll(".Tabs__item");
     this.items = Array.from(this.items).reduce((obj, item) => {
       obj[item.dataset.tab] = new TabItem(item);
@@ -49,6 +57,8 @@ class Tabs {
     }, {});
 
     // Listens for a click event in its children or self
+    return document.querySelector(`.Tabs__item[data-tab="${data}"]`);
+
     this.element.addEventListener('click', (event) => {
       if (event.tabData) {
        this.updateActive(event.tabData);
